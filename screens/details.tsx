@@ -1,18 +1,21 @@
 import 'react-native-gesture-handler'
-import React, { FC, useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 
+import { startChargingSession, stopChargingSession } from '../helpers/api'
+import { formatDistance } from '../helpers/utils'
 import { Charger } from '../def/charger'
+import { User } from '../def/user'
 
 interface _props {
   navigation : any,
   route: any
 }
 
-export const DetailsScreen: FC<_props> = ({navigation, route}: _props) => {
+export const DetailsScreen: React.FC<_props> = ({navigation, route}) => {
   
-  const { charger } : { charger: Charger }= route.params
+  const { charger, user } : { charger: Charger, user: User } = route.params
   const [charging, setCharging] = useState(false)
 
   useFocusEffect(
@@ -22,7 +25,7 @@ export const DetailsScreen: FC<_props> = ({navigation, route}: _props) => {
                 e.preventDefault()
                 Alert.alert(
                     'Cannot go back',
-                    'Please stop charging your car first to navigate back.',
+                    'Please stop charging your car before navigating back.',
                     [{ text: 'OK' }]
                 )
             }
@@ -36,34 +39,41 @@ export const DetailsScreen: FC<_props> = ({navigation, route}: _props) => {
 
   const handleStartStopCharging = () => {
     if (!charging) {
-      setCharging(true)
+      startChargingSession(user.name, user.carId, charger).then(() => {
+        setCharging(true)
+      })
     } else {
-      setCharging(false)
+      stopChargingSession(user.name, user.carId, charger).then(() => {
+        setCharging(false)
+      })
     }
   }
 
   const renderChargeButton = () => (
-      <TouchableOpacity style={styles.buttonCharge} onPress={handleStartStopCharging}>
+      <TouchableOpacity style={[styles.buttonCharge, styles.button]} onPress={handleStartStopCharging}>
         <Text style={styles.buttonChargeText}>Start Charging</Text>
       </TouchableOpacity>
   )
 
   const renderStopButton = () => (
-      <TouchableOpacity style={styles.buttonStop} onPress={handleStartStopCharging}>
+      <TouchableOpacity style={[styles.buttonStop, styles.button]} onPress={handleStartStopCharging}>
         <Text style={styles.buttonStopText}>Stop Charging</Text>
       </TouchableOpacity>
   )
 
   return (
     <View style={styles.container}>
-      <View>
-        { charger.AddressInfo.Title && <Text style={styles.title}>{charger.AddressInfo.Title}</Text> }
-        { charger.AddressInfo.AddressLine1 && <Text>{charger.AddressInfo.AddressLine1}</Text> }
+      { charger.AddressInfo.Title && <Text style={styles.title}>{charger.AddressInfo.Title}</Text> }
+      <View style={styles.details}>
+        { charger.AddressInfo.AddressLine1 && <Text style={styles.address}>{charger.AddressInfo.AddressLine1}</Text> }
         { charger.AddressInfo.Town && <Text>{charger.AddressInfo.Town}</Text> }
         { charger.AddressInfo.StateOrProvince && <Text>{charger.AddressInfo.StateOrProvince}</Text> }
-        { charger.AddressInfo.Postcode && <Text>{charger.AddressInfo.Postcode}</Text> }
-        { charging ? renderStopButton() : renderChargeButton() }
+        <View style={styles.subDetails}>
+          { charger.AddressInfo.Postcode && <Text style={styles.postcode}>{charger.AddressInfo.Postcode}</Text> }
+          { charger.AddressInfo.Distance && <Text style={styles.distance}>{formatDistance(charger.AddressInfo.Distance)}</Text> }
+        </View>
       </View>
+      { charging ? renderStopButton() : renderChargeButton() }
     </View>
   )
 }
@@ -72,61 +82,61 @@ export default DetailsScreen
 
 export const styles = StyleSheet.create({
 
-  expenseContainer: {
-    padding: 16,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
     container: {
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
     },
-    emptyHome: {
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
-
-    },
     title: {
+      fontSize: 30,
+      fontWeight: 'bold',
+      marginBottom: 10,
+    },
+    details: {
+      backgroundColor: '#fff',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      width: '80%'
+    },
+    address: {
+      color: 'grey',
       fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10,
     },
-    openMapButton: {
-      backgroundColor: 'black',
-      width: 'auto',
-      borderRadius: 20,
-      padding: 20,
-      position: 'absolute',
-      bottom: 50,
-      flexDirection: 'row',
-      justifyContent: 'center',
+    postcode: {
+      fontSize: 22,
+      fontWeight: 'bold',
+      marginBottom: 10,
     },
-    openMapButtonText: {
-      color: 'white',
-      textAlign: 'center',
+    subDetails: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%'
+    },
+    distance: {
+      fontSize: 16,
+      color: 'grey',
+      textAlign: 'right',
+    },
+    button: {
+      marginTop: 50,
+      borderRadius: 10,
+      padding: 20,
     },
     buttonCharge: {
       backgroundColor: 'black',
-      borderRadius: 5,
-      padding: 20,
-
     },
     buttonChargeText: {
       color: 'white',
       textAlign: 'center',
       fontWeight: 'bold',
-      fontSize: 16
+      fontSize: 16,
+      textTransform: 'uppercase'
     },
     buttonStop: {
       backgroundColor: 'white',
-      borderRadius: 5,
-      padding: 20,
       borderColor: 'black',
       borderWidth: 1
     },
@@ -134,7 +144,8 @@ export const styles = StyleSheet.create({
       color: 'black',
       textAlign: 'center',
       fontWeight: 'bold',
-      fontSize: 16
+      fontSize: 16,
+      textTransform: 'uppercase'
     },
     bold: {
       color: 'black',

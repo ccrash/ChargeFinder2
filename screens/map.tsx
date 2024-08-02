@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Modal, ActivityIndicator, Alert, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, Text, Modal, ActivityIndicator, Alert, TouchableOpacity, FlatList, Dimensions, StyleSheet  } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 
 import { fetchChargers } from '../helpers/api'
 import { Charger } from '../def/charger'
+import { User } from '../def/user'
 
 import MapMarkerDetails from '../components/mapMarkerDetails'
+import ListItem from '../components/listItem'
 
-import { StyleSheet, Dimensions } from 'react-native'
+interface _props {
+  navigation : any,
+  route: any
+}
 
-export const MapScreen = ({ navigation }: { navigation: any }) => {
+export const MapScreen: React.FC<_props> = ({ navigation, route }) => {
+
+  const { user } : { user: User } = route.params
+
   const [chargers, setChargers] = useState<Charger[]>([])
   const [selectedCharger, setSelectedCharger] = useState<Charger | null>(null)
   const [location, setLocation] = useState<Location.LocationObject | null>(null)
@@ -23,6 +32,8 @@ export const MapScreen = ({ navigation }: { navigation: any }) => {
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   })
+
+  const sheetRef = useRef<BottomSheet>(null)
 
   useEffect(() => {
     (async () => {
@@ -68,7 +79,7 @@ export const MapScreen = ({ navigation }: { navigation: any }) => {
 
   const onDetailsSelect = (charger: Charger) => {
     setModalVisible(false)
-    navigation.navigate('Details', { charger })
+    navigation.navigate('Details', { charger, user })
   }
 
   const onDetailsClose = () => {
@@ -108,6 +119,17 @@ export const MapScreen = ({ navigation }: { navigation: any }) => {
     </Modal>
   )
 
+  const renderList = () => (
+    <View style={styles.bottomSheet}>
+      <FlatList
+        data={chargers}
+        renderItem={({item}) => <ListItem item={item} onPress={() => navigation.navigate('Details', { charger : item, user })}/>}
+        keyExtractor={(item) => item.ID.toString()}
+        contentContainerStyle={styles.listContainer}
+      />
+    </View>
+  )
+
   if (loading) {
     return (
       <View style={styles.container}>
@@ -137,9 +159,17 @@ export const MapScreen = ({ navigation }: { navigation: any }) => {
         </MapView>
       )}
       {selectedCharger && renderMarkerDetails()}
-      <TouchableOpacity style={styles.mapButton} onPress={refreshChargers}>
-        <Text style={styles.mapButtonText}>Refresh</Text>
+      <TouchableOpacity style={styles.refreshButton} onPress={refreshChargers}>
+        <Text style={styles.refreshButtonText}>Refresh</Text>
       </TouchableOpacity>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[200, '50%', '100%']}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          { renderList() }
+        </BottomSheetView>
+      </BottomSheet>  
     </View>
   )
 }
@@ -158,20 +188,38 @@ export const styles = StyleSheet.create({
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height,
     },
-    mapButton: {
+    refreshButton: {
       backgroundColor: 'black',
       width: 'auto',
-      borderRadius: 20,
+      borderRadius: 10,
       padding: 20,
       position: 'absolute',
-      bottom: 50,
+      top: 30,
       flexDirection: 'row',
       justifyContent: 'center',
     },
-    mapButtonText: {
+    refreshButtonText: {
       color: 'white',
       textAlign: 'center',
       fontWeight: 'bold',
-      fontSize: 16
+      fontSize: 16,
+      textTransform: 'uppercase'
+    },
+    bottomSheet: {
+      backgroundColor: 'white',
+      padding: 16,
+      height: '100%',
+    },
+    listItem: {
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+    },
+    contentContainer: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    listContainer: {
+      paddingHorizontal: 16,
     },
   })

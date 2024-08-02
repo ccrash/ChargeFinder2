@@ -1,27 +1,38 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 
-const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('')
+interface _props {
+  navigation: any
+}
+
+export const LoginScreen: React.FC<_props> = ({ navigation }) => {
+  const [name, setName] = useState<string>('')
+  const [carId, setCarId] = useState<string>()
 
   const handleLogin = () => {
-    if (username.trim()) {
-      navigation.navigate('Home', { username })
+    if (name.trim()) {
+      navigation.navigate('Map', { user : {name, carId }})
     }
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerBig}>Hi</Text>
-      <Text style={styles.headerRegoular}>Enter your name to check your expanses</Text>
+      <Text style={styles.headerRegular}>Enter your username and car ID to access</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Car ID"
+        value={carId}
+        onChangeText={setCarId}
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={styles.buttonText}>Start</Text>
       </TouchableOpacity>
     </View>
   )
@@ -42,7 +53,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 16,
   },
-  headerRegoular: {
+  headerRegular: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 16,
@@ -59,7 +70,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#000',
     padding: 20,
-    borderRadius: 4,
+    borderRadius: 10,
     alignItems: 'center',
     width: '100%',
   },
@@ -67,6 +78,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    textTransform: 'uppercase'
   },
 })
 

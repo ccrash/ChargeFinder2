@@ -9,7 +9,7 @@ interface _props {
   onClose: () => void
 }
 
-export const MapMarkerDetails = ({charger, onContinue, onClose} : _props) => {
+export const MapMarkerDetails: React.FC<_props> = ({charger, onContinue, onClose} : _props) => {
 
   return charger && (
     
@@ -17,8 +17,8 @@ export const MapMarkerDetails = ({charger, onContinue, onClose} : _props) => {
       <Text style={styles.title}>{charger.AddressInfo.Title}</Text>
       { charger.AddressInfo.AddressLine1 && <Text style={styles.address}>{charger.AddressInfo.AddressLine1}</Text> }
       { charger.AddressInfo.Town && <Text style={styles.address}>{charger.AddressInfo.Town}</Text> }
-      { charger.AddressInfo.StateOrProvince && <Text>{charger.AddressInfo.StateOrProvince}</Text> }
       { charger.AddressInfo.Postcode && <Text style={styles.postcode}>{charger.AddressInfo.Postcode}</Text> }
+      { charger.AddressInfo.StateOrProvince && <Text>{charger.AddressInfo.StateOrProvince}</Text> }
       <View style={styles.buttons}>
         <TouchableOpacity style={styles.buttonSelect} onPress={() => onContinue(charger)}>
           <Text style={styles.buttonSelectText}>Select</Text>
@@ -69,13 +69,16 @@ export const styles = StyleSheet.create({
     },
     buttons: {
       flexDirection: 'row',
+      alignItems: 'center',
       alignContent: 'space-between',
       padding: 20,
+      width: 'auto'
     },
     buttonSelect: {
       backgroundColor: 'black',
-      borderRadius: 5,
+      borderRadius: 10,
       padding: 20,
+      margin: 10
 
     },
     buttonSelectText: {
@@ -89,7 +92,8 @@ export const styles = StyleSheet.create({
       borderRadius: 5,
       padding: 20,
       borderColor: 'black',
-      borderWidth: 1
+      borderWidth: 1,
+      margin: 10
     },
     buttonCloseText: {
       color: 'black',

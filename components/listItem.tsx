@@ -1,23 +1,15 @@
 import 'react-native-gesture-handler';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 
+import { formatDistance } from '../helpers/utils'
 import { Charger } from '../def/charger'
-
-function formatDistance(distance: number): string {
-  if (distance < 1) {
-      const meters = distance * 1000;
-      return `${meters.toFixed(0)} m`
-  } else {
-      return `${distance.toFixed(2)} km`
-  }
-}
 
 interface _props {
   item: Charger | null
   onPress: () => void
 }
 
-export const ListItem = ({ item , onPress } : _props) => {
+export const ListItem: React.FC<_props> = ({ item , onPress } : _props) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -25,7 +17,7 @@ export const ListItem = ({ item , onPress } : _props) => {
         <Text style={styles.title}>{item.AddressInfo.Title}</Text>
         <View style={styles.details}>
           { item.AddressInfo.AddressLine1 && <Text style={styles.address}>{item.AddressInfo.AddressLine1}</Text> }
-          { item.AddressInfo.StateOrProvince && <Text style={styles.distance}>{formatDistance(item.AddressInfo.Distance)}</Text> }
+          { item.AddressInfo.Distance && <Text style={styles.distance}>{formatDistance(item.AddressInfo.Distance)}</Text> }
         </View>
       </View>
     </TouchableOpacity>
@@ -63,7 +55,7 @@ const styles = StyleSheet.create({
   distance: {
     flex: 1,
     fontSize: 16,
-    fontWeight: 'bold',
+    color: 'grey',
     textAlign: 'right',
   }
 })
