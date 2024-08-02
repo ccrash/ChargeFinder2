@@ -5,7 +5,7 @@
 
 * Clone the repository in your favourite folder.
 * If you don't have an Open Charge API key, register an account and create a new one at https://openchargemap.org/
-* Edit the file in `src/settings/keys.ts` to contain your Open Charge API key
+* Edit the file in `settings/keys.ts` to contain your Open Charge API key
 
 ```js
 export const OpenChargeApiKey = "Insert your personal API Key here"
