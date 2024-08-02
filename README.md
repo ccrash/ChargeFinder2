@@ -29,6 +29,7 @@ npx expo start
 * Implement tests to ensure every component is working correctly
 * Implement endpoint tests to ensure endpoints are working correctly
 * Replace every string with an i18n alias to support different languages
+* Improve the Details page to show more details about the charger in a nicer layout
 * Improve the layout and define classes/alias to keep the design persistent and simplify theme management
 * Add alias definitions to simplify the path in imports
 * Following the Atomic design guidelines, I would redefine also the basic component to automate default functionalities and simplify library update/dismission
