@@ -1,0 +1,1 @@
+export const OpenChargeApiKey = "Insert your OpenCharge API Key here"
