@@ -11,7 +11,7 @@ export const LoginScreen: React.FC<_props> = ({ navigation }) => {
 
   const handleLogin = () => {
     if (name.trim()) {
-      navigation.navigate('Map', { user : {name, carId }})
+      navigation.navigate('Map', { user: { name, carId } })
     }
   }
 
