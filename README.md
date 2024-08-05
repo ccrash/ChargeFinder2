@@ -24,30 +24,29 @@ npx expo start
 ```
 
 # Features
-* Displays the open chargers available in your area based on your position
-* Move the location of the map to refresh and display the charger in that area
-* List of chargers displayed at the bottom of the map inside a BottomSheet component
-* Clicking on the list selects the relative marker in the map
-* If the list is fully expanded redirects straight to the details page
-* If charging your vehicle you can not leave the detils page till you stop charging
-* Supports both IOS and Android
+* Displays the open chargers available in your area based on your position.
+* Move the location of the map to refresh and display the chargers in that area.
+* The list of chargers is displayed at the bottom of the map inside a BottomSheet component.
+* Clicking on the list selects the relative marker on the map.
+* If the list is fully expanded, it redirects straight to the details page.
+* If charging your vehicle, you cannot leave the details page until you stop charging.
+* Supports both iOS and Android.
 
-# If it was a professional app I would
-* Integrate a state management library to manage different users/cars and save the app's state
-* Cache retrieved data and history to be available also offline
-* Implement more tests to ensure every component is working correctly
-* Replace every string with an i18n alias to support different languages
-* Improve the Details page to show more details about the charger in a nicer layout
-* Improve the layout and define classes/alias to keep the design persistent and simplify theme management
-* Add alias definitions to simplify the path in imports
-* More robust error handling should be added to handle various edge cases
-* Implement authentication for the backend API
-* Encode the key file so that it's not readable decompiling the final app (possibly move the key on the backend)
-
+# If it were a professional app I would
+* Integrate a state management library to manage different users/cars and save the app's state.
+* Cache retrieved data and history to be available offline as well.
+* Implement more tests to ensure every component is working correctly.
+* Replace every string with an i18n alias to support different languages.
+* Improve the Details page to show more details about the charger in a nicer layout.
+* Improve the layout and define classes/aliases to keep the design consistent and simplify theme management.
+* Add alias definitions to simplify the path in imports.
+* Add more robust error handling to handle various edge cases.
+* Implement authentication for the backend API.
+* Encode the key file so that it is not readable by decompiling the final app (possibly move the key to the backend).
 
 # Change Log
-* Login screen to set Username and Car ID dynamically
-* Chargers list integrated in a BottomSheet on the Map page
-* Style definition in the component file instead of separate files
-* Improved layout
-* Removed Redux and Axios integration to simplify the code
+* Login screen to set Username and Car ID dynamically.
+* Chargers list integrated into a BottomSheet on the Map page.
+* Style definition in the component file instead of separate files.
+* Improved layout.
+* Removed Redux and Axios integration to simplify the code.
