@@ -1,9 +1,5 @@
 import { OpenChargeApiKey } from '../settings/keys'
 
-import { db } from '../data/db'
-
-import { Charger } from '../def/charger'
-
 const addKeyToUrl = (url: string) : string => {
     return url + '&key=' + OpenChargeApiKey
 }
@@ -19,7 +15,7 @@ export const fetchChargers = async (latitude: number, longitude: number) => {
   }
 }
 
-export const startChargingSession = async (user: string, car: string, charger: Charger) => {
+export const startChargingSession = async (user: string, car_id: string, charger_id: number) => {
   try {
     const response = await fetch('https://example.ev.energy/startchargingsession', {
       method: 'POST',
@@ -28,20 +24,20 @@ export const startChargingSession = async (user: string, car: string, charger: C
       },
       body: JSON.stringify({
         user: user,
-        car_id: car,
-        charger_id: charger.ID,
+        car_id: car_id,
+        charger_id: charger_id,
       }),
     })
     return await response.json()
   } catch (error) {
     // commented/replaced because the endpoint doesn't work
-    console.log(`Start Charging user: ${user} car: ${car} on charger ${charger.ID}`)
+    console.log(`Start Charging user: ${user} car: ${car_id} on charger ${charger_id}`)
     // console.error('Error starting charge:', error)
     return null
   }
 }
 
-export const stopChargingSession = async (user: string, car: string, charger: Charger) => {
+export const stopChargingSession = async (user: string, car_id: string, charger_id: number) => {
   try {
     const response = await fetch('https://example.ev.energy/stopchargingsession', {
       method: 'POST',
@@ -50,14 +46,14 @@ export const stopChargingSession = async (user: string, car: string, charger: Ch
       },
       body: JSON.stringify({
         user: user,
-        car_id: car,
-        charger_id: charger.ID,
+        car_id: car_id,
+        charger_id: charger_id,
       }),
     })
     return await response.json()
   } catch (error) {
     // commented/replaced because the endpoint doesn't work
-    console.log(`Stop Charging user: ${user} car: ${car} on charger ${charger.ID}`)
+    console.log(`Stop Charging user: ${user} car: ${car_id} on charger ${charger_id}`)
     // console.error('Error stopping charge:', error)
     return null
   }

@@ -34,5 +34,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# test coverage
+.coverage/
+
 # key file
-src/settings/keys.ts
+.src/settings/keys.ts

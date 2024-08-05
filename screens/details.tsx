@@ -39,11 +39,11 @@ export const DetailsScreen: React.FC<_props> = ({ navigation, route }) => {
 
   const handleStartStopCharging = () => {
     if (!charging) {
-      startChargingSession(user.name, user.carId, charger).then(() => {
+      startChargingSession(user.name, user.carId, charger.ID).then(() => {
         setCharging(true)
       })
     } else {
-      stopChargingSession(user.name, user.carId, charger).then(() => {
+      stopChargingSession(user.name, user.carId, charger.ID).then(() => {
         setCharging(false)
       })
     }

@@ -1,14 +1,21 @@
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler'
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 
 import LoginScreen from './screens/login'
 import MapScreen from './screens/map'
 import DetailsScreen from './screens/details'
 
-const Stack = createStackNavigator();
+export type RootStackParamList = {
+  Login: undefined
+  Map: undefined
+  Details: undefined
+};
 
-export default function App() {
+const Stack = createStackNavigator<RootStackParamList>()
+
+const App: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -37,5 +44,8 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
+  )
 }
+
+export default App
+
