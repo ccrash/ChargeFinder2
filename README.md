@@ -23,16 +23,23 @@ npx expo install
 npx expo start 
 ```
 
+# Features
+* Displays the open chargers available in your area based on your position
+* Move the location of the map to refresh and display the charger in that area
+* List of chargers displayed at the bottom of the map inside a BottomSheet component
+* Clicking on the list selects the relative marker in the map
+* If the list is fully expanded redirects straight to the details page
+* If charging your vehicle you can not leave the detils page till you stop charging
+* Supports both IOS and Android
+
 # If it was a professional app I would
 * Integrate a state management library to manage different users/cars and save the app's state
 * Cache retrieved data and history to be available also offline
-* Implement tests to ensure every component is working correctly
-* Implement endpoint tests to ensure endpoints are working correctly
+* Implement more tests to ensure every component is working correctly
 * Replace every string with an i18n alias to support different languages
 * Improve the Details page to show more details about the charger in a nicer layout
 * Improve the layout and define classes/alias to keep the design persistent and simplify theme management
 * Add alias definitions to simplify the path in imports
-* Following the Atomic design guidelines, I would redefine also the basic component to automate default functionalities and simplify library update/dismission
 * More robust error handling should be added to handle various edge cases
 * Implement authentication for the backend API
 * Encode the key file so that it's not readable decompiling the final app (possibly move the key on the backend)
